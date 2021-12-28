@@ -1,0 +1,24 @@
+title 0.6 new note
+
+note left of browser:
+user submits form
+end note
+
+note over browser:
+browser retrieves form data
+end note
+
+note over browser:
+browser updates DOM with new note
+end note
+
+note over browser:
+browser sends note in JSON format
+end note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa \n{ body: { content: "...", date: "..." } }
+note over server:
+server parses request body for form data
+and saves note to notes array
+end note
+server-->browser: HTTP 201 \n{ message: "note created" }
