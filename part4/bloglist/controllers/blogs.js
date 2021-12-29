@@ -22,11 +22,8 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
       user: user.id
     })
     const savedBlog = await blog.save()
-    console.log('before:', user.blogs)
     user.blogs = user.blogs.concat(savedBlog.id)
-    console.log('after:', user.blogs)
-    const savedUser = await user.save()
-    console.log('saved user:', savedUser)
+    await user.save()
     response.status(201).json(savedBlog)
   }
 })
@@ -34,19 +31,19 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
 blogsRouter.delete('/:id', userExtractor, async (request, response) => {
   const user = request.user
   const blog = await Blog.findById(request.params.id)
-  if (user.id !== blog.user.id) {
+  if (user.id !== blog.user.toString()) {
     return response.status(401).json({ error: 'wrong user' })
   }
   await Blog.findByIdAndRemove(request.params.id)
   response.status(204).end()
 })
 
-blogsRouter.put('/:id', userExtractor, async (request, response) => {
-  const user = request.user
-  const existingBlog = await Blog.findById(request.params.id)
-  if (user.id !== existingBlog.user.id) {
-    return response.status(401).json({ error: 'wrong user' })
-  }
+blogsRouter.put('/:id', async (request, response) => {
+  // const user = request.user
+  // const existingBlog = await Blog.findById(request.params.id)
+  // if (user.id !== existingBlog.user.id) {
+  //   return response.status(401).json({ error: 'wrong user' })
+  // }
   const body = request.body
   const blog = {
     title: body.title,
