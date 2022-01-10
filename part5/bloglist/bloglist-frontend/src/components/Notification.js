@@ -2,15 +2,15 @@ import React from 'react'
 
 const Notification = ({ style, message }) => {
 
-    if (message === null) {
-        return null
-    }
+  if (message === null) {
+    return null
+  }
 
-    return (
-        <div className={style}>
-            {message}
-        </div>
-    )
+  return (
+    <div className={style}>
+      {message}
+    </div>
+  )
 
 }
 

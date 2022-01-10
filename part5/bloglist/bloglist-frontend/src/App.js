@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
+import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
 const App = () => {
 
-  const emptyBlog = { title: '', author: '', url: '' }
-
   const [blogs, setBlogs] = useState([])
-  const [newBlog, setNewBlog] = useState(emptyBlog)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -17,8 +16,13 @@ const App = () => {
   const [notificationMessage, setNotificationMessage] = useState('')
 
   useEffect(() => {
-    blogService.getAll().then(blogs => setBlogs(blogs))  
+    blogService.getAll()
+      .then(blogs => setBlogs(blogs.sort((blog1, blog2) => blog1.likes - blog2.likes)))
   }, [])
+
+  useEffect(() => {
+    setBlogs(blogs.sort((blog1, blog2) => blog1.likes - blog2.likes))
+  }, [blogs])
 
   useEffect(() => {
     const userJSON = window.localStorage.getItem('bloglist:user')
@@ -61,16 +65,35 @@ const App = () => {
     notify('success', 'logged out successfully')
   }
 
-  const addBlog = (event) => {
-    event.preventDefault()
-    blogService
-      .create(newBlog)
+  const blogFormRef = useRef()
+
+  const createBlog = blogObject => {
+    blogFormRef.current.toggleVisibility()
+    blogService.create(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
-        setNewBlog(emptyBlog)
         notify('success', `a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
       })
       .catch(error => notify('error', `failed to add new blog to database: ${error.message}`))
+  }
+
+  const updateBlog = (id, blogObject) => {
+    blogService.update(id, blogObject)
+      .then(returnedBlog => {
+        setBlogs(blogs.map(blog => blog.id === id ? returnedBlog : blog))
+        notify('success', `existing blog ${returnedBlog.title} by ${returnedBlog.author} updated`)
+      })
+      .catch(error => notify('error', `failed to update existing blog in database: ${error.message}`))
+  }
+
+  const removeBlog = id => {
+    const oldBlog = blogs.filter(blog => blog.id === id)[0]
+    blogService.remove(id)
+      .then(returnedBlog => {
+        setBlogs(blogs.filter(blog => blog.id !== id))
+        notify('success', `blog ${oldBlog.title} by ${oldBlog.author} deleted`)
+      })
+      .catch(error => notify('error', `failed to delete blog from database: ${error.message}`))
   }
 
   if (user === null) {
@@ -103,27 +126,11 @@ const App = () => {
         {user.name} logged in
         <button type="submit" onClick={handleLogout}>logout</button>
       </p>
-      <h2>create new</h2>
-      <form onSubmit={addBlog}>
-        <div>
-          title:
-          <input type="text" value={newBlog.title} name="Title"
-            onChange={({ target }) => setNewBlog({ ...newBlog, title: target.value })} />
-        </div>
-        <div>
-          author:
-          <input type="text" value={newBlog.author} name="Author"
-            onChange={({ target }) => setNewBlog({ ...newBlog, author: target.value })} />
-        </div>
-        <div>
-          url:
-          <input type="text" value={newBlog.url} name="URL"
-            onChange={({ target }) => setNewBlog({ ...newBlog, url: target.value })} />
-        </div>
-        <button type="submit">create</button>
-      </form>
+      <Togglable buttonLabel='create new blog' ref={blogFormRef}>
+        <BlogForm createBlog={createBlog} />
+      </Togglable>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} isOwner={blog.user.username === user.username} updateBlog={updateBlog} removeBlog={removeBlog} />
       )}
     </div>
   )
