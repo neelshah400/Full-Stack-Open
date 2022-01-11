@@ -30,21 +30,21 @@ const Blog = ({ blog, isOwner, updateBlog, removeBlog }) => {
   }
 
   return (
-    <div style={blogStyle}>
-      <div>
+    <div style={blogStyle} id='blogDiv'>
+      <div id='basicInfoDiv'>
         {blog.title} {blog.author}
-        <button onClick={toggleVisibility}>{buttonLabel}</button>
+        <button onClick={toggleVisibility} id='toggleButton'>{buttonLabel}</button>
       </div>
-      <div style={showWhenVisible}>
-        <div>{blog.url}</div>
-        <div>
+      <div style={showWhenVisible} id='detailedInfoDiv' >
+        <div id='urlDiv'>{blog.url}</div>
+        <div id='likesDiv'>
           likes {blog.likes}
-          <button onClick={likeBlog}>like</button>
+          <button onClick={likeBlog} id='likeButton'>like</button>
         </div>
-        <div>{blog.user.name}</div>
+        <div id='userDiv'>{blog.user.name}</div>
         {isOwner &&
-          <div>
-            <button onClick={deleteBlog}>remove</button>
+          <div id='removeDiv'>
+            <button onClick={deleteBlog} id='removeButton'>remove</button>
           </div>
         }
       </div>
