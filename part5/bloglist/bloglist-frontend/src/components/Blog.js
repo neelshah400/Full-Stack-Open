@@ -30,14 +30,14 @@ const Blog = ({ blog, isOwner, updateBlog, removeBlog }) => {
   }
 
   return (
-    <div style={blogStyle} id='blogDiv'>
+    <div style={blogStyle} id='blogDiv' className='blog'>
       <div id='basicInfoDiv'>
         {blog.title} {blog.author}
         <button onClick={toggleVisibility} id='toggleButton'>{buttonLabel}</button>
       </div>
       <div style={showWhenVisible} id='detailedInfoDiv' >
         <div id='urlDiv'>{blog.url}</div>
-        <div id='likesDiv'>
+        <div id='likesDiv' className='likes'>
           likes {blog.likes}
           <button onClick={likeBlog} id='likeButton'>like</button>
         </div>

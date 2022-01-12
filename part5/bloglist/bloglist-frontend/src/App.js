@@ -17,11 +17,11 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll()
-      .then(blogs => setBlogs(blogs.sort((blog1, blog2) => blog1.likes - blog2.likes)))
+      .then(blogs => setBlogs(blogs.sort((blog1, blog2) => blog2.likes - blog1.likes)))
   }, [])
 
   useEffect(() => {
-    setBlogs(blogs.sort((blog1, blog2) => blog1.likes - blog2.likes))
+    setBlogs(blogs.sort((blog1, blog2) => blog2.likes - blog1.likes))
   }, [blogs])
 
   useEffect(() => {
@@ -104,15 +104,15 @@ const App = () => {
         <form onSubmit={handleLogin}>
           <div>
             username
-            <input type="text" value={username} name="Username"
+            <input id="usernameInput" type="text" value={username} name="Username"
               onChange={({ target }) => setUsername(target.value)} />
           </div>
           <div>
             password
-            <input type="password" value={password} name="Password"
+            <input id="passwordInput" type="password" value={password} name="Password"
               onChange={({ target }) => setPassword(target.value)} />
           </div>
-          <button type="submit">login</button>
+          <button id="loginButton" type="submit">login</button>
         </form>
       </>
     )
