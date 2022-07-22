@@ -8,10 +8,10 @@ const Notification = () => {
   const notification = useSelector(state => state.notification)
 
   useEffect(() => {
-    if (notification !== '') {
+    if (notification.message !== '') {
       setTimeout(() => {
         dispatch(setNotification(''))
-      }, 5000)
+      }, notification.time)
     }
   }, [dispatch, notification])
 
@@ -21,9 +21,9 @@ const Notification = () => {
     borderWidth: 1
   }
 
-  return notification && (
+  return notification.message && (
     <div style={style}>
-      {notification}
+      {notification.message}
     </div>
   )
 
