@@ -1,18 +1,18 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Blog from './components/Blog';
-import BlogForm from './components/BlogForm';
+import { Route, Routes } from 'react-router-dom';
+import Blogs from './components/Blogs';
+import Users from './components/Users';
 import Notification from './components/Notification';
-import Togglable from './components/Togglable';
 import { initializeBlogs } from './reducers/blogsReducer';
 import authService from './services/auth';
 import { login, logUserOut } from './reducers/authReducer';
 import LoginForm from './components/LoginForm';
+import { initializeUsers } from './reducers/usersReducer';
 
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth);
-  const blogs = useSelector((state) => state.blogs);
 
   useEffect(() => {
     const storedUser = authService.getUser();
@@ -20,13 +20,12 @@ function App() {
       dispatch(login(storedUser));
     }
     dispatch(initializeBlogs());
+    dispatch(initializeUsers());
   }, [dispatch]);
 
   const handleLogout = () => {
     dispatch(logUserOut());
   };
-
-  const blogFormRef = useRef();
 
   if (user === null) {
     return <LoginForm />;
@@ -42,12 +41,10 @@ function App() {
           logout
         </button>
       </p>
-      <Togglable buttonLabel="create new blog" ref={blogFormRef}>
-        <BlogForm />
-      </Togglable>
-      {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} isOwner={blog.user.username === user.username} />
-      ))}
+      <Routes>
+        <Route path="/" element={<Blogs />} />
+        <Route path="/users" element={<Users />} />
+      </Routes>
     </div>
   );
 }
