@@ -1,12 +1,11 @@
 import React, { useRef } from 'react';
 import { useSelector } from 'react-redux';
-import Togglable from './Togglable';
+import { Link } from 'react-router-dom';
 import BlogForm from './BlogForm';
-import Blog from './Blog';
+import Togglable from './Togglable';
 
 function Blogs() {
   const blogs = useSelector((state) => state.blogs);
-  const user = useSelector((state) => state.auth);
 
   const blogFormRef = useRef();
 
@@ -16,9 +15,14 @@ function Blogs() {
       <Togglable buttonLabel="create new blog" ref={blogFormRef}>
         <BlogForm />
       </Togglable>
-      {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} isOwner={blog.user.username === user.username} />
-      ))}
+      <h3>blogs added</h3>
+      <ul>
+        {blogs.map((blog) => (
+          <li key={blog.id}>
+            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

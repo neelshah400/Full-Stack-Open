@@ -31,4 +31,9 @@ const remove = (blog) => {
   return request.then((response) => response.data);
 };
 
-export default { getAll, create, update, remove };
+const commentOn = (blog, comment) => {
+  const request = axios.post(`${baseUrl}/${blog.id}/comments`, { comment }, config());
+  return request.then((response) => response.data);
+};
+
+export default { getAll, create, update, remove, commentOn };

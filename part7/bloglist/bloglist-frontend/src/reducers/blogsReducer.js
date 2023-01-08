@@ -77,4 +77,18 @@ export const deleteBlog = (blog) => {
   };
 };
 
+export const commentOnBlog = (blog, comment) => {
+  return async (dispatch) => {
+    try {
+      const commentedBlog = await blogsService.commentOn(blog, comment);
+      dispatch(updateBlog(commentedBlog));
+      dispatch(createNotification('success', `commented on blog ${blog.title} by ${blog.author}`));
+    } catch (error) {
+      dispatch(
+        createNotification('error', `failed to comment on blog from database: ${error.message}`)
+      );
+    }
+  };
+};
+
 export default blogsSlice.reducer;

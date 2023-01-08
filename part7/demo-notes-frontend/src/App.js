@@ -8,6 +8,7 @@ import Users from './components/Users'
 
 const App = () => {
 
+  // eslint-disable-next-line no-unused-vars
   const [notes, setNotes] = useState([
     {
       id: 1,

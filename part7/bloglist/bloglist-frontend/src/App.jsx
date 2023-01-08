@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Link } from 'react-router-dom';
+import Blog from './components/Blog';
 import Blogs from './components/Blogs';
-import Users from './components/Users';
-import Notification from './components/Notification';
-import { initializeBlogs } from './reducers/blogsReducer';
-import authService from './services/auth';
-import { login, logUserOut } from './reducers/authReducer';
 import LoginForm from './components/LoginForm';
+import Notification from './components/Notification';
+import User from './components/User';
+import Users from './components/Users';
+import { login, logUserOut } from './reducers/authReducer';
+import { initializeBlogs } from './reducers/blogsReducer';
 import { initializeUsers } from './reducers/usersReducer';
+import authService from './services/auth';
 
 function App() {
   const dispatch = useDispatch();
@@ -27,23 +29,37 @@ function App() {
     dispatch(logUserOut());
   };
 
+  const padding = {
+    padding: 5,
+  };
+
   if (user === null) {
     return <LoginForm />;
   }
 
   return (
     <div>
-      <h2>blogs</h2>
+      <div>
+        <Link style={padding} to="/">
+          blogs
+        </Link>
+        <Link style={padding} to="/users">
+          users
+        </Link>
+        <span>
+          {user.name} logged in&nbsp;
+          <button type="submit" onClick={handleLogout}>
+            logout
+          </button>
+        </span>
+      </div>
+      <h1>blogs</h1>
       <Notification />
-      <p>
-        {user.name} logged in
-        <button type="submit" onClick={handleLogout}>
-          logout
-        </button>
-      </p>
       <Routes>
         <Route path="/" element={<Blogs />} />
+        <Route path="/blogs/:id" element={<Blog />} />
         <Route path="/users" element={<Users />} />
+        <Route path="/users/:id" element={<User />} />
       </Routes>
     </div>
   );
