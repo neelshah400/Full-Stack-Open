@@ -18,9 +18,9 @@ mongoose.connect(MONGODB_URI)
 const typeDefs = gql`
 
   type User {
+    id: ID!
     username: String!
     friends: [Person!]!
-    id: ID!
   }
 
   type Token {
@@ -33,10 +33,10 @@ const typeDefs = gql`
   }
 
   type Person {
+    id: ID!
     name: String!
     phone: String
     address: Address!
-    id: ID!
   }
 
   enum YesNo {
