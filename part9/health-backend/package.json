@@ -9,7 +9,7 @@
     "calculateExercises": "ts-node exerciseCalculator.ts",
     "start": "ts-node index.ts",
     "dev": "ts-node-dev index.ts",
-    "lint": "eslint --ext .ts ."
+    "lint": "eslint ."
   },
   "author": "Neel Shah",
   "license": "MIT",
