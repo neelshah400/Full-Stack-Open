@@ -1,12 +1,12 @@
 {
-  "name": "health",
+  "name": "demo-calculator-backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",
   "scripts": {
     "ts-node": "ts-node",
-    "calculateBmi": "ts-node bmiCalculator.ts",
-    "calculateExercises": "ts-node exerciseCalculator.ts",
+    "multiply": "ts-node multiplier.ts",
+    "calculate": "ts-node calculator.ts",
     "start": "ts-node index.ts",
     "dev": "ts-node-dev index.ts",
     "lint": "eslint --ext .ts ."
