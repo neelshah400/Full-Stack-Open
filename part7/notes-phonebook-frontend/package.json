@@ -38,7 +38,7 @@
     ]
   },
   "volta": {
-    "node": "16.16.0"
+    "node": "16.13.1"
   },
   "devDependencies": {
     "json-server": "^0.17.0"

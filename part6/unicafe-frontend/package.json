@@ -37,7 +37,7 @@
     ]
   },
   "volta": {
-    "node": "16.16.0"
+    "node": "16.13.1"
   },
   "devDependencies": {
     "deep-freeze": "^0.0.1"

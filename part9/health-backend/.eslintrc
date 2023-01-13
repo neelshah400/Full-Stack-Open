@@ -27,6 +27,5 @@
     "project": "./tsconfig.json",
     "ecmaVersion": 11,
     "sourceType": "module"
-  },
-  "ignorePatterns": [".eslintrc.js"]
+  }
 }
