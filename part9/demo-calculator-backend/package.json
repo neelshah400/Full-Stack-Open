@@ -24,5 +24,8 @@
   },
   "dependencies": {
     "express": "^4.18.2"
+  },
+  "volta": {
+    "node": "16.13.1"
   }
 }
